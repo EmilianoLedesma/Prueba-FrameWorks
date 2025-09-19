@@ -9,7 +9,7 @@ const galleryImages: GalleryImage[] = [
     id: 'nebula1',
     title: 'Nebulosa del Águila',
     description: 'Los famosos "Pilares de la Creación" capturados por el Telescopio Hubble.',
-    src: 'https://science.nasa.gov/wp-content/uploads/2023/05/hubble-pillars-of-creation-jpg.webp',
+    src: 'https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
     alt: 'Nebulosa del Águila',
     credit: 'NASA/ESA/Hubble'
   },
@@ -17,7 +17,7 @@ const galleryImages: GalleryImage[] = [
     id: 'mars-surface',
     title: 'Superficie de Marte',
     description: 'Vista panorámica de la superficie marciana tomada por el rover Perseverance.',
-    src: 'https://mars.nasa.gov/system/news_items/main_images/9513_PIA25969-web.jpg',
+    src: 'https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
     alt: 'Superficie de Marte',
     credit: 'NASA/JPL-Caltech'
   },
@@ -25,7 +25,7 @@ const galleryImages: GalleryImage[] = [
     id: 'saturn-rings',
     title: 'Anillos de Saturno',
     description: 'Imagen detallada de los espectaculares anillos de Saturno.',
-    src: 'https://science.nasa.gov/wp-content/uploads/2023/05/cassini-saturn-farewell-pia21344-jpg.webp',
+    src: 'https://images.unsplash.com/photo-1614732414444-096040ec8c5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80',
     alt: 'Anillos de Saturno',
     credit: 'NASA/Cassini'
   },
@@ -33,7 +33,7 @@ const galleryImages: GalleryImage[] = [
     id: 'earth-iss',
     title: 'Tierra desde la ISS',
     description: 'Nuestro planeta azul visto desde la Estación Espacial Internacional.',
-    src: 'https://www.nasa.gov/wp-content/uploads/2023/01/iss042e340851.jpg',
+    src: 'https://images.unsplash.com/photo-1446776877081-d282a0f896e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80',
     alt: 'Tierra desde la ISS',
     credit: 'NASA'
   },
@@ -41,7 +41,7 @@ const galleryImages: GalleryImage[] = [
     id: 'galaxy',
     title: 'Galaxia Andrómeda',
     description: 'Nuestra galaxia vecina más cercana, a 2.5 millones de años luz.',
-    src: 'https://science.nasa.gov/wp-content/uploads/2023/05/hubble-andromeda-galaxy-jpg.webp',
+    src: 'https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
     alt: 'Galaxia Andrómeda',
     credit: 'NASA/Hubble'
   },
@@ -49,7 +49,7 @@ const galleryImages: GalleryImage[] = [
     id: 'jupiter-storm',
     title: 'Gran Mancha Roja',
     description: 'La famosa tormenta de Júpiter, más grande que la Tierra.',
-    src: 'https://science.nasa.gov/wp-content/uploads/2023/05/jupiter-great-red-spot-jpg.webp',
+    src: 'https://images.unsplash.com/photo-1614313913007-2b4ae8ce32d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80',
     alt: 'Gran Mancha Roja de Júpiter',
     credit: 'NASA/Juno'
   },
@@ -57,7 +57,7 @@ const galleryImages: GalleryImage[] = [
     id: 'james-webb',
     title: 'Nebulosa Carina - James Webb',
     description: 'Una de las primeras imágenes del telescopio espacial James Webb.',
-    src: 'https://science.nasa.gov/wp-content/uploads/2023/05/webb-carina-nebula-nircam-final-1280.jpg',
+    src: 'https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80',
     alt: 'Nebulosa Carina por James Webb',
     credit: 'NASA/ESA/CSA/STScI'
   },
@@ -65,7 +65,7 @@ const galleryImages: GalleryImage[] = [
     id: 'moon-phases',
     title: 'Fases de la Luna',
     description: 'Composición mostrando las diferentes fases lunares.',
-    src: 'https://science.nasa.gov/wp-content/uploads/2023/05/moon-phases-jpg.webp',
+    src: 'https://images.unsplash.com/photo-1465101162946-4377e57745c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80',
     alt: 'Fases de la Luna',
     credit: 'NASA/GSFC'
   }
