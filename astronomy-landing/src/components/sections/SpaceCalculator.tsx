@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react'
 import Container from '../ui/Container'
 import Card from '../ui/Card'
-import Button from '../ui/Button'
 
 interface CelestialBody {
   id: string
@@ -165,14 +164,24 @@ const travelOptions: TravelOption[] = [
   }
 ]
 
+interface CalculationResult {
+  distance: number
+  timeInHours: number
+  timeInSeconds: number
+  timeInMinutes: number
+  timeInDays: number
+  timeInYears: number
+  fuelCost: number
+}
+
 export default function SpaceCalculator() {
   const [fromBody, setFromBody] = useState<CelestialBody>(celestialBodies[3]) // Tierra
   const [toBody, setToBody] = useState<CelestialBody>(celestialBodies[4]) // Marte
   const [selectedTravel, setSelectedTravel] = useState<TravelOption>(travelOptions[3]) // Cohete Apollo
   const [isCalculating, setIsCalculating] = useState(false)
-  const [result, setResult] = useState<any>(null)
+  const [result, setResult] = useState<CalculationResult | null>(null)
 
-  const calculateDistance = () => {
+  const calculateDistance = React.useCallback(() => {
     setIsCalculating(true)
     
     setTimeout(() => {
@@ -196,7 +205,7 @@ export default function SpaceCalculator() {
       
       setIsCalculating(false)
     }, 1000)
-  }
+  }, [fromBody.distanceFromSun, toBody.distanceFromSun, selectedTravel.speed])
 
   const formatNumber = (num: number): string => {
     if (num >= 1e12) return `${(num / 1e12).toFixed(2)} billones`
@@ -215,7 +224,7 @@ export default function SpaceCalculator() {
 
   useEffect(() => {
     calculateDistance()
-  }, [fromBody, toBody, selectedTravel])
+  }, [calculateDistance])
 
   return (
     <section className="py-20 bg-gradient-to-b from-purple-900/20 to-blue-900/30">
@@ -410,7 +419,7 @@ export default function SpaceCalculator() {
           <h3 className="text-xl font-bold text-white mb-4 text-center">Mapa del Sistema Solar</h3>
           <div className="relative h-32 bg-gradient-to-r from-black to-gray-900 rounded-lg overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center">
-              {celestialBodies.filter(body => body.type !== 'moon').map((body, index) => {
+              {celestialBodies.filter(body => body.type !== 'moon').map((body) => {
                 const position = (body.distanceFromSun / 4515) * 90 + 5 // Porcentaje de posición
                 const isSelected = body.id === fromBody.id || body.id === toBody.id
                 

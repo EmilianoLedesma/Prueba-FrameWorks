@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import Container from '../ui/Container'
 import { GalleryImage } from '@/types'
 
@@ -94,15 +95,13 @@ export default function Gallery() {
               onClick={() => setSelectedImage(image)}
             >
               <div className="aspect-video relative overflow-hidden">
-                <img
+                <Image
                   src={image.src}
                   alt={image.alt}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
                   loading="lazy"
-                  onError={(e) => {
-                    // Fallback para imágenes que no carguen
-                    e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjxmIGNsYXNzPSJlbW9qaSI+8J+MjDwvZj4gSW1hZ2VuIGRlbCBlc3BhY2lvPC90ZXh0Pjwvc3ZnPg=='
-                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
@@ -136,14 +135,15 @@ export default function Gallery() {
         >
           <div className="max-w-4xl max-h-full overflow-auto bg-white/10 backdrop-blur-md rounded-lg border border-white/20">
             <div className="relative">
-              <img
-                src={selectedImage.src}
-                alt={selectedImage.alt}
-                className="w-full h-auto max-h-96 object-contain"
-                onError={(e) => {
-                  e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjxmIGNsYXNzPSJlbW9qaSI+8J+MjDwvZj4gSW1hZ2VuIGRlbCBlc3BhY2lvPC90ZXh0Pjwvc3ZnPg=='
-                }}
-              />
+              <div className="relative w-full max-h-96 aspect-video">
+                <Image
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 80vw"
+                  className="object-contain"
+                />
+              </div>
               <button 
                 onClick={(e) => {
                   e.stopPropagation()

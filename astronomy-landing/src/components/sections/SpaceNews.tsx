@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import Image from 'next/image'
 import Container from '../ui/Container'
 import Card from '../ui/Card'
 import Button from '../ui/Button'
@@ -115,7 +116,7 @@ const formatDate = (dateString: string) => {
 export default function SpaceNews() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [isLoading, setIsLoading] = useState(false)
-  const [newsData, setNewsData] = useState<SpaceNews[]>(mockSpaceNews)
+  const newsData = mockSpaceNews
 
   const categories = [
     { id: 'all', name: 'Todas las noticias', color: 'bg-gray-500' },
@@ -126,7 +127,7 @@ export default function SpaceNews() {
 
   const filteredNews = selectedCategory === 'all' 
     ? newsData 
-    : newsData.filter(news => news.category === selectedCategory)
+    : newsData.filter((news: SpaceNews) => news.category === selectedCategory)
 
   const refreshNews = () => {
     setIsLoading(true)
@@ -137,7 +138,7 @@ export default function SpaceNews() {
     }, 2000)
   }
 
-  const breakingNews = newsData.filter(news => news.isBreaking)
+  const breakingNews = newsData.filter((news: SpaceNews) => news.isBreaking)
 
   return (
     <section className="py-20 bg-gradient-to-b from-green-900/20 to-blue-900/20">
@@ -194,11 +195,13 @@ export default function SpaceNews() {
                       </div>
                     </div>
                     {news.image && (
-                      <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
-                        <img 
+                      <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 relative">
+                        <Image 
                           src={news.image} 
                           alt={news.title}
-                          className="w-full h-full object-cover"
+                          fill
+                          sizes="80px"
+                          className="object-cover"
                           loading="lazy"
                         />
                       </div>
@@ -232,15 +235,14 @@ export default function SpaceNews() {
           {filteredNews.filter(news => !news.isBreaking).map((news) => (
             <Card key={news.id} className="group cursor-pointer hover:border-blue-500/50 transition-all">
               {news.image && (
-                <div className="aspect-video rounded-lg overflow-hidden mb-4">
-                  <img 
+                <div className="aspect-video rounded-lg overflow-hidden mb-4 relative">
+                  <Image 
                     src={news.image} 
                     alt={news.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjwL'
-                    }}
                   />
                 </div>
               )}

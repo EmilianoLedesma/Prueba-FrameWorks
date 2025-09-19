@@ -129,7 +129,6 @@ const constellations = [
 
 export default function StarExplorer() {
   const [selectedStar, setSelectedStar] = useState<Star | null>(null)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [rotation, setRotation] = useState({ x: 0, y: 0 })
   const [selectedConstellation, setSelectedConstellation] = useState<string>('all')
   const canvasRef = useRef<HTMLDivElement>(null)
@@ -138,10 +137,6 @@ export default function StarExplorer() {
     const handleMouseMove = (e: MouseEvent) => {
       if (canvasRef.current) {
         const rect = canvasRef.current.getBoundingClientRect()
-        setMousePosition({
-          x: (e.clientX - rect.left) / rect.width,
-          y: (e.clientY - rect.top) / rect.height
-        })
         
         setRotation({
           x: (e.clientY - rect.top - rect.height / 2) / rect.height * 20,
