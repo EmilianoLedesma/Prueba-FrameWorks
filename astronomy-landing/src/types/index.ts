@@ -26,3 +26,22 @@ export interface GalleryImage {
   alt: string
   credit: string
 }
+
+export interface Rocket {
+  id: string
+  name: string
+  agency: string
+  height: string
+  diameter: string
+  mass: string
+  payload: string
+  firstFlight: number
+  status: 'active' | 'retired' | 'development'
+  description: string
+  achievements: string[]
+  specs: {
+    stages: number
+    thrust: string
+    fuelType: string
+  }
+}
