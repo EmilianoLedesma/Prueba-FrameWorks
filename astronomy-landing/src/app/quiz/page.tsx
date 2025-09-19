@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Container from '@/components/ui/Container'
 
 interface Question {
@@ -133,21 +133,7 @@ export default function QuizPage() {
   const [timeLeft, setTimeLeft] = useState(30)
   const [quizStarted, setQuizStarted] = useState(false)
 
-  useEffect(() => {
-    if (quizStarted && !quizCompleted && timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
-    } else if (timeLeft === 0 && !showResult) {
-      handleAnswer(-1) // tiempo agotado
-    }
-  }, [timeLeft, quizStarted, quizCompleted, showResult])
-
-  const startQuiz = () => {
-    setQuizStarted(true)
-    setTimeLeft(30)
-  }
-
-  const handleAnswer = (answerIndex: number) => {
+  const handleAnswer = useCallback((answerIndex: number) => {
     const question = questions[currentQuestion]
     const isCorrect = answerIndex === question.correct
     
@@ -164,6 +150,20 @@ export default function QuizPage() {
     setSelectedAnswer(answerIndex)
     setShowResult(true)
     setAnsweredQuestions([...answeredQuestions, currentQuestion])
+  }, [currentQuestion, score, userAnswers, answeredQuestions])
+
+  useEffect(() => {
+    if (quizStarted && !quizCompleted && timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
+      return () => clearTimeout(timer)
+    } else if (timeLeft === 0 && !showResult) {
+      handleAnswer(-1) // tiempo agotado
+    }
+  }, [timeLeft, quizStarted, quizCompleted, showResult, handleAnswer])
+
+  const startQuiz = () => {
+    setQuizStarted(true)
+    setTimeLeft(30)
   }
 
   const nextQuestion = () => {

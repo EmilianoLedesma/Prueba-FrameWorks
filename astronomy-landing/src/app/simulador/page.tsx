@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Container from '@/components/ui/Container'
 
 interface SpaceDestination {
@@ -138,7 +138,13 @@ export default function SimuladorPage() {
   const [crewSize, setCrewSize] = useState(4)
   const [cargoWeight, setCargoWeight] = useState(1000) // kg
   const [isCalculating, setIsCalculating] = useState(false)
-  const [missionResults, setMissionResults] = useState<any>(null)
+  const [missionResults, setMissionResults] = useState<{
+    travelTime: number;
+    fuelCost: number;
+    totalCost: number;
+    successProbability: number;
+    roundTripTime: number;
+  } | null>(null)
 
   const calculateMission = () => {
     setIsCalculating(true)

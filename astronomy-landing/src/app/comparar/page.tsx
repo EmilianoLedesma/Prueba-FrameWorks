@@ -153,7 +153,7 @@ export default function PlanetComparison() {
     setSelectedPlanets(newSelection)
   }
 
-  const getComparisonValue = (planet: PlanetData, metric: string) => {
+  const getComparisonValue = (planet: PlanetData, metric: 'size' | 'mass' | 'temperature' | 'distance') => {
     switch (metric) {
       case 'size': return planet.diameter
       case 'mass': return planet.mass
