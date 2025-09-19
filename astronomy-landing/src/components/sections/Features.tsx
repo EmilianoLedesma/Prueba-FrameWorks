@@ -84,7 +84,7 @@ export default function Features() {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {planets.map((planet, index) => (
+          {planets.map((planet) => (
             <Card key={planet.id} hover className="group cursor-pointer">
               <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${planet.color} mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}></div>
               
@@ -92,7 +92,7 @@ export default function Features() {
                 {planet.name}
               </h3>
               
-              <p className="text-gray-300 text-sm mb-4 line-clamp-3">
+              <p className="text-gray-300 text-sm mb-4 overflow-hidden">
                 {planet.description}
               </p>
               
