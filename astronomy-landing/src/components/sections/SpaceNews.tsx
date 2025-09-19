@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import Image from 'next/image'
 import Container from '../ui/Container'
 import Card from '../ui/Card'
 import Button from '../ui/Button'
@@ -195,13 +194,11 @@ export default function SpaceNews() {
                       </div>
                     </div>
                     {news.image && (
-                      <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 relative">
-                        <Image 
+                      <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                        <img 
                           src={news.image} 
                           alt={news.title}
-                          fill
-                          sizes="80px"
-                          className="object-cover"
+                          className="w-full h-full object-cover"
                           loading="lazy"
                         />
                       </div>
@@ -235,14 +232,16 @@ export default function SpaceNews() {
           {filteredNews.filter(news => !news.isBreaking).map((news) => (
             <Card key={news.id} className="group cursor-pointer hover:border-blue-500/50 transition-all">
               {news.image && (
-                <div className="aspect-video rounded-lg overflow-hidden mb-4 relative">
-                  <Image 
+                <div className="aspect-video rounded-lg overflow-hidden mb-4">
+                  <img 
                     src={news.image} 
                     alt={news.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlbiBkZWwgZXNwYWNpbzwvdGV4dD48L3N2Zz4='
+                    }}
                   />
                 </div>
               )}

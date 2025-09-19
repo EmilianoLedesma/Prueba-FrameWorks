@@ -226,7 +226,9 @@ export default function StarExplorer() {
                 return (
                   <div
                     key={star.id}
-                    className="absolute cursor-pointer transition-all duration-300 hover:scale-150"
+                    className={`absolute cursor-pointer transition-all duration-300 hover:scale-150 animate-pulse ${
+                      selectedStar?.id === star.id ? 'scale-150 z-20' : 'hover:z-10'
+                    }`}
                     style={{
                       left: `${star.x}px`,
                       top: `${star.y}px`,
@@ -236,7 +238,7 @@ export default function StarExplorer() {
                       borderRadius: '50%',
                       boxShadow: `0 0 ${size}px ${star.color}`,
                       transform: `translateZ(${star.z * 100}px)`,
-                      animation: 'twinkle 2s ease-in-out infinite alternate'
+                      animationDuration: '3s'
                     }}
                     onClick={() => setSelectedStar(star)}
                     title={star.name}
@@ -333,13 +335,6 @@ export default function StarExplorer() {
           </p>
         </div>
       </Container>
-
-      <style jsx>{`
-        @keyframes twinkle {
-          0% { opacity: 0.7; }
-          100% { opacity: 1; }
-        }
-      `}</style>
     </section>
   )
 }

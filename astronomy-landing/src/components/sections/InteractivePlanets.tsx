@@ -181,28 +181,6 @@ export default function InteractivePlanets() {
   const [viewMode, setViewMode] = useState<'orbit' | 'comparison'>('orbit')
   const animationRef = useRef<number | null>(null)
 
-  // Añadir estilos CSS para animaciones
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-    `;
-    if (!document.head.querySelector('style[data-planets-animation]')) {
-      style.setAttribute('data-planets-animation', 'true');
-      document.head.appendChild(style);
-    }
-    
-    return () => {
-      const existingStyle = document.head.querySelector('style[data-planets-animation]');
-      if (existingStyle) {
-        existingStyle.remove();
-      }
-    };
-  }, [])
-
   useEffect(() => {
     if (isAnimating) {
       const animate = () => {
@@ -363,7 +341,7 @@ export default function InteractivePlanets() {
                     onClick={() => setSelectedPlanet(planet)}
                   >
                     <div
-                      className={`rounded-full relative ${isSelected ? 'animate-pulse' : ''}`}
+                      className={`rounded-full relative ${isSelected ? 'animate-pulse' : ''} ${isAnimating ? 'animate-spin' : ''}`}
                       style={{
                         width: `${size}px`,
                         height: `${size}px`,
@@ -371,9 +349,10 @@ export default function InteractivePlanets() {
                         boxShadow: isSelected 
                           ? `0 0 25px ${planet.color}` 
                           : `0 0 10px ${planet.color}`,
-                        animation: isAnimating 
-                          ? `spin ${Math.abs(planet.rotationSpeed) * 50}s linear infinite ${planet.rotationSpeed < 0 ? 'reverse' : ''}` 
-                          : 'none'
+                        animationDuration: isAnimating 
+                          ? `${Math.abs(planet.rotationSpeed) * 50}s`
+                          : undefined,
+                        animationDirection: planet.rotationSpeed < 0 ? 'reverse' : 'normal'
                       }}
                     >
                       {/* Anillos para Saturno */}

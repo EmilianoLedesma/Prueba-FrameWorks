@@ -414,55 +414,141 @@ export default function SpaceCalculator() {
           </Card>
         </div>
 
-        {/* Visualización del sistema solar */}
+        {/* Visualización del sistema solar mejorada */}
         <Card className="p-6 mb-8">
-          <h3 className="text-xl font-bold text-white mb-4 text-center">Mapa del Sistema Solar</h3>
-          <div className="relative h-32 bg-gradient-to-r from-black to-gray-900 rounded-lg overflow-hidden">
-            <div className="absolute inset-0 flex items-center justify-center">
+          <h3 className="text-xl font-bold text-white mb-4 text-center">🌌 Mapa del Sistema Solar</h3>
+          <div className="relative h-40 bg-gradient-to-r from-gray-900 via-black to-gray-900 rounded-lg overflow-hidden border border-white/10">
+            {/* Estrellas de fondo */}
+            <div className="absolute inset-0">
+              {[...Array(20)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-1 h-1 bg-white rounded-full opacity-60 animate-pulse"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 3}s`,
+                    animationDuration: `${2 + Math.random() * 2}s`
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Sol en el centro izquierdo */}
+            <div className="absolute inset-0 flex items-center">
+              <div
+                className="absolute z-20"
+                style={{ left: '5%', transform: 'translateX(-50%)' }}
+                title="Sol"
+              >
+                <div 
+                  className="w-6 h-6 rounded-full bg-yellow-400 animate-pulse"
+                  style={{
+                    background: 'radial-gradient(circle, #FDB813 0%, #FF8C00 100%)',
+                    boxShadow: '0 0 20px #FDB813, 0 0 40px rgba(253, 184, 19, 0.3)'
+                  }}
+                />
+                <div className="absolute top-7 left-1/2 transform -translate-x-1/2 text-xs text-yellow-300 font-semibold whitespace-nowrap">
+                  ☀️ Sol
+                </div>
+              </div>
+
+              {/* Planetas */}
               {celestialBodies.filter(body => body.type !== 'moon').map((body) => {
-                const position = (body.distanceFromSun / 4515) * 90 + 5 // Porcentaje de posición
+                // Usar escala logarítmica para mejor distribución visual
+                const logDistance = Math.log10(body.distanceFromSun)
+                const position = ((logDistance - 1.76) / (3.65 - 1.76)) * 85 + 10 // Escala de 10% a 95%
                 const isSelected = body.id === fromBody.id || body.id === toBody.id
+                const planetSize = Math.max(6, Math.min(16, Math.log(body.radius) * 1.8))
                 
                 return (
                   <div
                     key={body.id}
-                    className={`absolute transition-all duration-300 ${isSelected ? 'scale-150 z-10' : 'hover:scale-125'}`}
+                    className={`absolute transition-all duration-300 z-10 ${isSelected ? 'scale-150' : 'hover:scale-125'}`}
                     style={{
                       left: `${position}%`,
                       transform: 'translateX(-50%)',
                     }}
-                    title={body.name}
+                    title={`${body.name} - ${body.distanceFromSun}`}
                   >
                     <div
-                      className={`rounded-full ${isSelected ? 'animate-pulse' : ''}`}
+                      className={`rounded-full border-2 ${isSelected ? 'animate-pulse border-white' : 'border-transparent'}`}
                       style={{
-                        width: `${Math.max(8, Math.log(body.radius) * 2)}px`,
-                        height: `${Math.max(8, Math.log(body.radius) * 2)}px`,
+                        width: `${planetSize}px`,
+                        height: `${planetSize}px`,
                         backgroundColor: body.color,
-                        boxShadow: isSelected ? `0 0 20px ${body.color}` : `0 0 10px ${body.color}`
+                        boxShadow: isSelected 
+                          ? `0 0 25px ${body.color}, 0 0 50px ${body.color}` 
+                          : `0 0 8px ${body.color}`
                       }}
                     />
+                    {/* Nombre del planeta */}
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 text-xs text-white font-medium whitespace-nowrap opacity-90">
+                      {body.name}
+                    </div>
+                    
+                    {/* Anillos especiales */}
+                    {body.id === 'saturn' && (
+                      <div 
+                        className="absolute rounded-full border border-gray-400 opacity-40"
+                        style={{
+                          width: `${planetSize * 1.6}px`,
+                          height: `${planetSize * 1.6}px`,
+                          left: '50%',
+                          top: '50%',
+                          transform: 'translate(-50%, -50%)'
+                        }}
+                      />
+                    )}
                   </div>
                 )
               })}
             </div>
             
-            {/* Línea de viaje */}
-            {fromBody && toBody && (
-              <div className="absolute inset-0 flex items-center">
+            {/* Línea de viaje mejorada */}
+            {fromBody && toBody && fromBody.id !== toBody.id && (
+              <div className="absolute inset-0 flex items-center z-5">
                 <div
-                  className="h-0.5 bg-gradient-to-r from-blue-500 to-green-500 opacity-75"
+                  className="h-1 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 opacity-80 rounded-full animate-pulse"
                   style={{
-                    left: `${(fromBody.distanceFromSun / 4515) * 90 + 5}%`,
-                    width: `${Math.abs((toBody.distanceFromSun - fromBody.distanceFromSun) / 4515) * 90}%`
+                    left: `${((Math.log10(fromBody.distanceFromSun) - 1.76) / (3.65 - 1.76)) * 85 + 10}%`,
+                    width: `${Math.abs(((Math.log10(toBody.distanceFromSun) - 1.76) / (3.65 - 1.76)) * 85 + 10) - ((Math.log10(fromBody.distanceFromSun) - 1.76) / (3.65 - 1.76)) * 85 - 10}%`,
+                    boxShadow: '0 0 10px rgba(147, 51, 234, 0.5)'
                   }}
-                />
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-ping" />
+                </div>
               </div>
             )}
+
+            {/* Información de distancias */}
+            <div className="absolute bottom-2 left-2 right-2 flex justify-between text-xs text-gray-400">
+              <span>0 UA</span>
+              <span>5 UA</span>
+              <span>20 UA</span>
+              <span>30 UA</span>
+            </div>
           </div>
-          <div className="flex justify-between text-xs text-gray-400 mt-2">
-            <span>Sol</span>
-            <span>Neptuno</span>
+          
+          {/* Leyenda */}
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-400 mb-2">
+              Representación logarítmica de distancias. 1 UA = 149.6 millones km
+            </p>
+            <div className="flex justify-center items-center gap-4 text-xs text-gray-500">
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
+                <span>Origen</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                <span>Destino</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-8 h-0.5 bg-gradient-to-r from-blue-400 to-green-400 rounded"></div>
+                <span>Ruta de viaje</span>
+              </div>
+            </div>
           </div>
         </Card>
 
