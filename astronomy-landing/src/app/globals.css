@@ -26,6 +26,7 @@ body {
   padding: 0;
 }
 
+/* Animaciones de estrellas */
 .stars {
   background: radial-gradient(2px 2px at 20px 30px, #fff, transparent),
               radial-gradient(2px 2px at 40px 70px, #fff, transparent),
@@ -42,6 +43,7 @@ body {
   to { transform: translateY(-100px); }
 }
 
+/* Animaciones flotantes */
 @keyframes float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-10px) rotate(180deg); }
@@ -67,4 +69,155 @@ body {
 
 .animate-float-delayed-2 {
   animation: float-delayed-2 10s ease-in-out infinite;
+}
+
+/* Efectos de parpadeo para estrellas */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+.twinkle {
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+/* Efectos de giro para planetas */
+@keyframes planet-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.planet-spin {
+  animation: planet-spin 20s linear infinite;
+}
+
+/* Efectos de pulsación */
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 10px currentColor;
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 25px currentColor;
+    transform: scale(1.05);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Efectos de texto degradado animado */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-animate {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient-shift 4s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Efectos de hover mejorados */
+.interactive-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interactive-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Efectos de carga */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Efectos de desvanecimiento */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Utilidades para truncar texto */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Efectos de brillo para elementos especiales */
+.glow-effect {
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+/* Animación de órbitas */
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+}
+
+.orbit-animation {
+  animation: orbit 30s linear infinite;
+}
+
+/* Efectos de partículas */
+@keyframes particle-float {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+    opacity: 0.7;
+  }
+  33% { 
+    transform: translateY(-20px) translateX(10px) rotate(120deg);
+    opacity: 1;
+  }
+  66% { 
+    transform: translateY(-10px) translateX(-10px) rotate(240deg);
+    opacity: 0.8;
+  }
+}
+
+.particle {
+  animation: particle-float 8s ease-in-out infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .stars {
+    background-size: 150px 75px;
+  }
+  
+  .interactive-card:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
 }

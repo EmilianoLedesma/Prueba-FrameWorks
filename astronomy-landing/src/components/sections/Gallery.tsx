@@ -9,7 +9,7 @@ const galleryImages: GalleryImage[] = [
     id: 'nebula1',
     title: 'Nebulosa del Águila',
     description: 'Los famosos "Pilares de la Creación" capturados por el Telescopio Hubble.',
-    src: '/api/placeholder/600/400',
+    src: 'https://science.nasa.gov/wp-content/uploads/2023/05/hubble-pillars-of-creation-jpg.webp',
     alt: 'Nebulosa del Águila',
     credit: 'NASA/ESA/Hubble'
   },
@@ -17,7 +17,7 @@ const galleryImages: GalleryImage[] = [
     id: 'mars-surface',
     title: 'Superficie de Marte',
     description: 'Vista panorámica de la superficie marciana tomada por el rover Perseverance.',
-    src: '/api/placeholder/600/400',
+    src: 'https://mars.nasa.gov/system/news_items/main_images/9513_PIA25969-web.jpg',
     alt: 'Superficie de Marte',
     credit: 'NASA/JPL-Caltech'
   },
@@ -25,7 +25,7 @@ const galleryImages: GalleryImage[] = [
     id: 'saturn-rings',
     title: 'Anillos de Saturno',
     description: 'Imagen detallada de los espectaculares anillos de Saturno.',
-    src: '/api/placeholder/600/400',
+    src: 'https://science.nasa.gov/wp-content/uploads/2023/05/cassini-saturn-farewell-pia21344-jpg.webp',
     alt: 'Anillos de Saturno',
     credit: 'NASA/Cassini'
   },
@@ -33,7 +33,7 @@ const galleryImages: GalleryImage[] = [
     id: 'earth-iss',
     title: 'Tierra desde la ISS',
     description: 'Nuestro planeta azul visto desde la Estación Espacial Internacional.',
-    src: '/api/placeholder/600/400',
+    src: 'https://www.nasa.gov/wp-content/uploads/2023/01/iss042e340851.jpg',
     alt: 'Tierra desde la ISS',
     credit: 'NASA'
   },
@@ -41,7 +41,7 @@ const galleryImages: GalleryImage[] = [
     id: 'galaxy',
     title: 'Galaxia Andrómeda',
     description: 'Nuestra galaxia vecina más cercana, a 2.5 millones de años luz.',
-    src: '/api/placeholder/600/400',
+    src: 'https://science.nasa.gov/wp-content/uploads/2023/05/hubble-andromeda-galaxy-jpg.webp',
     alt: 'Galaxia Andrómeda',
     credit: 'NASA/Hubble'
   },
@@ -49,9 +49,25 @@ const galleryImages: GalleryImage[] = [
     id: 'jupiter-storm',
     title: 'Gran Mancha Roja',
     description: 'La famosa tormenta de Júpiter, más grande que la Tierra.',
-    src: '/api/placeholder/600/400',
+    src: 'https://science.nasa.gov/wp-content/uploads/2023/05/jupiter-great-red-spot-jpg.webp',
     alt: 'Gran Mancha Roja de Júpiter',
     credit: 'NASA/Juno'
+  },
+  {
+    id: 'james-webb',
+    title: 'Nebulosa Carina - James Webb',
+    description: 'Una de las primeras imágenes del telescopio espacial James Webb.',
+    src: 'https://science.nasa.gov/wp-content/uploads/2023/05/webb-carina-nebula-nircam-final-1280.jpg',
+    alt: 'Nebulosa Carina por James Webb',
+    credit: 'NASA/ESA/CSA/STScI'
+  },
+  {
+    id: 'moon-phases',
+    title: 'Fases de la Luna',
+    description: 'Composición mostrando las diferentes fases lunares.',
+    src: 'https://science.nasa.gov/wp-content/uploads/2023/05/moon-phases-jpg.webp',
+    alt: 'Fases de la Luna',
+    credit: 'NASA/GSFC'
   }
 ]
 
@@ -77,18 +93,25 @@ export default function Gallery() {
               className="group cursor-pointer overflow-hidden rounded-lg bg-white/10 backdrop-blur-md border border-white/20 hover:scale-105 transition-all duration-300"
               onClick={() => setSelectedImage(image)}
             >
-              <div className="aspect-video bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
-                <div className="text-white text-center p-4">
-                  <div className="text-2xl mb-2">🌌</div>
-                  <div className="text-sm opacity-75">Imagen del espacio</div>
-                </div>
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
+                  onError={(e) => {
+                    // Fallback para imágenes que no carguen
+                    e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjxmIGNsYXNzPSJlbW9qaSI+8J+MjDwvZj4gSW1hZ2VuIGRlbCBlc3BhY2lvPC90ZXh0Pjwvc3ZnPg=='
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
               
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
                   {image.title}
                 </h3>
-                <p className="text-gray-300 text-sm mb-2 overflow-hidden">
+                <p className="text-gray-300 text-sm mb-2 overflow-hidden line-clamp-2">
                   {image.description}
                 </p>
                 <p className="text-gray-400 text-xs">
@@ -101,7 +124,7 @@ export default function Gallery() {
         
         <div className="text-center mt-12">
           <p className="text-gray-400">
-            * Las imágenes mostradas son placeholders. En un proyecto real, se cargarían imágenes reales de NASA/ESA.
+            Imágenes reales cortesía de NASA, ESA y otras agencias espaciales.
           </p>
         </div>
       </Container>
@@ -112,11 +135,24 @@ export default function Gallery() {
           onClick={() => setSelectedImage(null)}
         >
           <div className="max-w-4xl max-h-full overflow-auto bg-white/10 backdrop-blur-md rounded-lg border border-white/20">
-            <div className="aspect-video bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
-              <div className="text-white text-center p-8">
-                <div className="text-4xl mb-4">🌌</div>
-                <div className="text-lg">{selectedImage.title}</div>
-              </div>
+            <div className="relative">
+              <img
+                src={selectedImage.src}
+                alt={selectedImage.alt}
+                className="w-full h-auto max-h-96 object-contain"
+                onError={(e) => {
+                  e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjxmIGNsYXNzPSJlbW9qaSI+8J+MjDwvZj4gSW1hZ2VuIGRlbCBlc3BhY2lvPC90ZXh0Pjwvc3ZnPg=='
+                }}
+              />
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setSelectedImage(null)
+                }}
+                className="absolute top-4 right-4 w-8 h-8 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+              >
+                ×
+              </button>
             </div>
             <div className="p-6">
               <h3 className="text-2xl font-bold text-white mb-4">{selectedImage.title}</h3>
