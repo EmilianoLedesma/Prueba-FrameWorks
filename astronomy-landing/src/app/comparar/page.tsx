@@ -225,7 +225,7 @@ export default function PlanetComparison() {
               ].map((metric) => (
                 <button
                   key={metric.key}
-                  onClick={() => setComparisonMetric(metric.key as any)}
+                  onClick={() => setComparisonMetric(metric.key as 'size' | 'mass' | 'temperature' | 'distance')}
                   className={`px-4 py-2 rounded-lg transition-all duration-300 ${
                     comparisonMetric === metric.key
                       ? 'bg-gradient-to-r from-blue-500/30 to-purple-500/30 border border-blue-400/50'

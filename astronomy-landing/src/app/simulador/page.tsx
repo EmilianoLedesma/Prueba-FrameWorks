@@ -239,7 +239,7 @@ export default function SimuladorPage() {
                   {propulsionTypes.map((propulsion) => (
                     <button
                       key={propulsion.type}
-                      onClick={() => setSelectedPropulsion(propulsion.type as any)}
+                      onClick={() => setSelectedPropulsion(propulsion.type as 'chemical' | 'ion' | 'nuclear')}
                       className={`w-full text-left p-4 rounded-lg transition-all duration-300 ${
                         selectedPropulsion === propulsion.type
                           ? 'bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/50'
