@@ -31,7 +31,7 @@ const planets3D: Planet3D[] = [
     y: 200,
     z: 0,
     rotationSpeed: 0.02,
-    orbitSpeed: 0.04,
+    orbitSpeed: 0.08, // Más rápido (más cerca del Sol)
     currentAngle: 0,
     moons: 0,
     atmosphere: 'Prácticamente inexistente',
@@ -50,7 +50,7 @@ const planets3D: Planet3D[] = [
     y: 200,
     z: 0,
     rotationSpeed: -0.01,
-    orbitSpeed: 0.03,
+    orbitSpeed: 0.06,
     currentAngle: 45,
     moons: 0,
     atmosphere: 'Dióxido de carbono (96%)',
@@ -69,7 +69,7 @@ const planets3D: Planet3D[] = [
     y: 200,
     z: 0,
     rotationSpeed: 0.05,
-    orbitSpeed: 0.025,
+    orbitSpeed: 0.05, // Velocidad de referencia
     currentAngle: 90,
     moons: 1,
     atmosphere: 'Nitrógeno (78%), Oxígeno (21%)',
@@ -88,7 +88,7 @@ const planets3D: Planet3D[] = [
     y: 200,
     z: 0,
     rotationSpeed: 0.04,
-    orbitSpeed: 0.02,
+    orbitSpeed: 0.04,
     currentAngle: 135,
     moons: 2,
     atmosphere: 'Dióxido de carbono (95%)',
@@ -107,7 +107,7 @@ const planets3D: Planet3D[] = [
     y: 200,
     z: 0,
     rotationSpeed: 0.08,
-    orbitSpeed: 0.01,
+    orbitSpeed: 0.02, // Más lento (más lejos del Sol)
     currentAngle: 180,
     moons: 83,
     atmosphere: 'Hidrógeno (89%), Helio (10%)',
@@ -126,13 +126,51 @@ const planets3D: Planet3D[] = [
     y: 200,
     z: 0,
     rotationSpeed: 0.07,
-    orbitSpeed: 0.008,
+    orbitSpeed: 0.015, // Muy lento
     currentAngle: 225,
     moons: 146,
     atmosphere: 'Hidrógeno (96%), Helio (3%)',
     gravity: '10.44 m/s²',
     dayLength: '10.7 horas',
     temperature: '-139°C'
+  },
+  {
+    id: 'uranus',
+    name: 'Urano',
+    description: 'Un gigante de hielo que rota de lado, con anillos verticales.',
+    distanceFromSun: '2.87 mil millones km',
+    diameter: '51,118 km',
+    color: '#4FD0E3',
+    x: 400,
+    y: 200,
+    z: 0,
+    rotationSpeed: 0.06,
+    orbitSpeed: 0.01,
+    currentAngle: 270,
+    moons: 27,
+    atmosphere: 'Hidrógeno (83%), Helio (15%)',
+    gravity: '8.69 m/s²',
+    dayLength: '17.2 horas',
+    temperature: '-197°C'
+  },
+  {
+    id: 'neptune',
+    name: 'Neptuno',
+    description: 'El planeta más lejano, con los vientos más fuertes del sistema solar.',
+    distanceFromSun: '4.50 mil millones km',
+    diameter: '49,528 km',
+    color: '#4B70DD',
+    x: 460,
+    y: 200,
+    z: 0,
+    rotationSpeed: 0.05,
+    orbitSpeed: 0.008,
+    currentAngle: 315,
+    moons: 14,
+    atmosphere: 'Hidrógeno (80%), Helio (19%)',
+    gravity: '11.15 m/s²',
+    dayLength: '16.1 horas',
+    temperature: '-201°C'
   }
 ]
 
@@ -143,19 +181,64 @@ export default function InteractivePlanets() {
   const [viewMode, setViewMode] = useState<'orbit' | 'comparison'>('orbit')
   const animationRef = useRef<number | null>(null)
 
+  // Añadir estilos CSS para animaciones
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+    `;
+    if (!document.head.querySelector('style[data-planets-animation]')) {
+      style.setAttribute('data-planets-animation', 'true');
+      document.head.appendChild(style);
+    }
+    
+    return () => {
+      const existingStyle = document.head.querySelector('style[data-planets-animation]');
+      if (existingStyle) {
+        existingStyle.remove();
+      }
+    };
+  }, [])
+
   useEffect(() => {
     if (isAnimating) {
       const animate = () => {
-        setPlanetsState(prev => prev.map(planet => ({
-          ...planet,
-          currentAngle: planet.currentAngle + planet.orbitSpeed,
-          x: viewMode === 'orbit' 
-            ? 200 + Math.cos(planet.currentAngle * Math.PI / 180) * (50 + planets3D.indexOf(planet) * 30)
-            : 80 + planets3D.indexOf(planet) * 60,
-          y: viewMode === 'orbit'
-            ? 200 + Math.sin(planet.currentAngle * Math.PI / 180) * (30 + planets3D.indexOf(planet) * 15)
-            : 200
-        })))
+        setPlanetsState(prev => prev.map(planet => {
+          const newAngle = planet.currentAngle + planet.orbitSpeed
+          
+          if (viewMode === 'orbit') {
+            // Calcular órbitas realistas con el Sol en el centro
+            const centerX = 200 // Centro del Sol
+            const centerY = 200 // Centro del Sol
+            const planetIndex = planets3D.findIndex(p => p.id === planet.id)
+            
+            // Radio orbital basado en la distancia real (escalado)
+            const orbitRadius = 40 + planetIndex * 35 // Incremento progresivo
+            
+            // Calcular posición orbital
+            const x = centerX + Math.cos(newAngle * Math.PI / 180) * orbitRadius
+            const y = centerY + Math.sin(newAngle * Math.PI / 180) * orbitRadius * 0.6 // Órbitas ligeramente elípticas
+            
+            return {
+              ...planet,
+              currentAngle: newAngle,
+              x,
+              y
+            }
+          } else {
+            // Modo comparación - línea horizontal
+            const planetIndex = planets3D.findIndex(p => p.id === planet.id)
+            return {
+              ...planet,
+              currentAngle: newAngle,
+              x: 80 + planetIndex * 60,
+              y: 200
+            }
+          }
+        }))
         animationRef.current = requestAnimationFrame(animate)
       }
       animationRef.current = requestAnimationFrame(animate)
@@ -222,17 +305,44 @@ export default function InteractivePlanets() {
                 background: 'radial-gradient(circle at center, #1a1a2e 0%, #000000 70%)'
               }}
             >
-              {/* Sol */}
+              {/* Sol - Centro del sistema */}
               <div 
-                className="absolute w-8 h-8 bg-yellow-400 rounded-full"
+                className="absolute rounded-full z-10"
                 style={{
-                  left: viewMode === 'orbit' ? '200px' : '40px',
+                  width: viewMode === 'orbit' ? '16px' : '32px',
+                  height: viewMode === 'orbit' ? '16px' : '32px',
+                  left: viewMode === 'orbit' ? '200px' : '20px',
                   top: '200px',
                   transform: 'translate(-50%, -50%)',
-                  boxShadow: '0 0 30px #FDB813',
-                  animation: 'pulse 2s ease-in-out infinite alternate'
+                  background: 'radial-gradient(circle, #FDB813 0%, #FF8C00 100%)',
+                  boxShadow: '0 0 30px #FDB813, 0 0 60px #FDB813',
+                  animation: 'pulse 3s ease-in-out infinite alternate'
                 }}
-              />
+              >
+                {/* Corona solar */}
+                <div 
+                  className="absolute inset-0 rounded-full animate-spin"
+                  style={{
+                    background: 'conic-gradient(from 0deg, transparent 0%, #FDB813 25%, transparent 50%, #FDB813 75%, transparent 100%)',
+                    filter: 'blur(2px)',
+                    opacity: 0.6
+                  }}
+                />
+              </div>
+              
+              {/* Etiqueta del Sol */}
+              {viewMode === 'orbit' && (
+                <div 
+                  className="absolute text-yellow-300 text-xs font-bold whitespace-nowrap"
+                  style={{
+                    left: '200px',
+                    top: '185px',
+                    transform: 'translateX(-50%)'
+                  }}
+                >
+                  ☀️ Sol
+                </div>
+              )}
               
               {/* Planetas */}
               {planetsState.map((planet) => {
@@ -280,6 +390,20 @@ export default function InteractivePlanets() {
                         />
                       )}
                       
+                      {/* Anillos para Urano (verticales) */}
+                      {planet.id === 'uranus' && (
+                        <div
+                          className="absolute border border-cyan-400 rounded-full opacity-60"
+                          style={{
+                            width: `${size * 1.5}px`,
+                            height: `${size * 1.5}px`,
+                            left: '50%',
+                            top: '50%',
+                            transform: 'translate(-50%, -50%) rotate(90deg)'
+                          }}
+                        />
+                      )}
+                      
                       {/* Indicador de lunas */}
                       {planet.moons && planet.moons > 0 && (
                         <div className="absolute -top-1 -right-1 bg-gray-300 text-black text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
@@ -299,19 +423,22 @@ export default function InteractivePlanets() {
               {/* Órbitas */}
               {viewMode === 'orbit' && (
                 <>
-                  {planets3D.map((_, index) => (
-                    <div
-                      key={index}
-                      className="absolute border border-white/20 rounded-full"
-                      style={{
-                        width: `${(50 + index * 30) * 2}px`,
-                        height: `${(30 + index * 15) * 2}px`,
-                        left: '200px',
-                        top: '200px',
-                        transform: 'translate(-50%, -50%)'
-                      }}
-                    />
-                  ))}
+                  {planets3D.map((_, index) => {
+                    const orbitRadius = 40 + index * 35
+                    return (
+                      <div
+                        key={`orbit-${index}`}
+                        className="absolute border border-white/20 rounded-full"
+                        style={{
+                          width: `${orbitRadius * 2}px`,
+                          height: `${orbitRadius * 2 * 0.6}px`, // Órbitas elípticas
+                          left: '200px',
+                          top: '200px',
+                          transform: 'translate(-50%, -50%)'
+                        }}
+                      />
+                    )
+                  })}
                 </>
               )}
               
@@ -392,6 +519,8 @@ export default function InteractivePlanets() {
                     {selectedPlanet.id === 'saturn' && 'Saturno es menos denso que el agua, ¡flotaría en un océano gigante!'}
                     {selectedPlanet.id === 'earth' && 'La Tierra es el único planeta conocido que alberga vida.'}
                     {selectedPlanet.id === 'mercury' && 'Mercurio no tiene atmósfera, por lo que no hay viento ni clima.'}
+                    {selectedPlanet.id === 'uranus' && 'Urano rota de lado, posiblemente debido a una colisión antigua.'}
+                    {selectedPlanet.id === 'neptune' && 'Los vientos en Neptuno pueden alcanzar hasta 2,100 km/h.'}
                   </p>
                 </div>
               </Card>
@@ -436,13 +565,6 @@ export default function InteractivePlanets() {
           </p>
         </div>
       </Container>
-
-      <style jsx>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </section>
   )
 }

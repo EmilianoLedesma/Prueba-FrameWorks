@@ -110,7 +110,7 @@ export default function Gallery() {
                 <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
                   {image.title}
                 </h3>
-                <p className="text-gray-300 text-sm mb-2 overflow-hidden line-clamp-2">
+                <p className="text-gray-300 text-sm mb-2 overflow-hidden text-ellipsis whitespace-nowrap">
                   {image.description}
                 </p>
                 <p className="text-gray-400 text-xs">
